@@ -1,0 +1,2 @@
+$mynetworks = []
+include postfix
