@@ -1,6 +1,9 @@
 $mynetworks = []
+
+# Setup Postfix
 include postfix
 
+# Setup NGINX
 node default {
     class { 'nginx': }
     nginx::resource::vhost { 'www.example.com':
@@ -11,4 +14,9 @@ node default {
         ensure   => present,
         www_root => '/var/www/www.isthistherealsiteoristhisjustfantasy.com',
     }
+}
+
+# Setup MySQL (will eventually be MariaDB hopefully)
+class { 'mysql::server':
+    config_hash => { 'root_password' => 'welcomemat' }
 }
