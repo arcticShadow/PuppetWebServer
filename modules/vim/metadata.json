@@ -1,0 +1,23 @@
+{
+  "name": "b0d0nne11-vim",
+  "version": "0.0.1",
+  "source": "UNKNOWN",
+  "author": "b0d0nne11",
+  "license": "Apache License, Version 2.0",
+  "summary": "Install vim",
+  "description": "UNKNOWN",
+  "project_page": "https://github.com/b0d0nne11/puppet-modules/tree/master/b0d0nne11-vim",
+  "dependencies": [
+
+  ],
+  "types": [
+
+  ],
+  "checksums": {
+    "Modulefile": "e257bbb94e6b1ef17e5bd52874273e82",
+    "README.md": "d869f20ccb66f1fc08f232c9206c537b",
+    "manifests/init.pp": "9d8f0b8f417599888195810ffd006136",
+    "spec/spec_helper.rb": "a55d1e6483344f8ec6963fcb2c220372",
+    "tests/init.pp": "44e816d0677833dac5d9c79df270a196"
+  }
+}
