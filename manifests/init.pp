@@ -1,9 +1,9 @@
 $mynetworks = []
 
-# Setup Postfix
+## Setup Postfix
 include postfix
 
-# Setup NGINX
+## Setup NGINX
 node default {
     class { 'nginx': }
     nginx::resource::vhost { 'www.example.com':
@@ -16,14 +16,14 @@ node default {
     }
 }
 
-# Setup MySQL (will eventually be MariaDB hopefully)
+## Setup MySQL (will eventually be MariaDB hopefully)
 class { 'mysql::server':
     config_hash => { 'root_password' => 'welcomemat' }
 }
 
 
 
-# Setup vim
+## Setup vim
 class {'vim': } # This guys module is really basic, no config file even...
 
 ## I started writing this one. Needs a bit of editing to get the config right
@@ -38,3 +38,17 @@ class {'vim': } # This guys module is really basic, no config file even...
 #     mode => 644,
 #     source => , ## GET A VIMRC FILE FROM SOMEWHERE USEFUL
 # }
+
+## Create a web user and group
+user {'webuser':
+    name => 'theweb',
+    ensure => present,
+    shell => '/bin/bash',
+    gid => 'theweb',
+}
+
+group {'webusers':
+    name => 'theweb',
+    ensure => present,
+    before => User['webuser'],
+}
