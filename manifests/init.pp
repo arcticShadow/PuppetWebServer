@@ -1,7 +1,7 @@
-$mynetworks = []
+#$mynetworks = []
 
 ## Setup Postfix
-include postfix
+#include postfix
 
 ## Setup NGINX
 node default {
