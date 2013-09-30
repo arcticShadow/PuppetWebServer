@@ -1,0 +1,3 @@
+[submodule "modules/postfix"]
+	path = modules/postfix
+	url = https://github.com/thias/puppet-postfix.git
