@@ -1,6 +1,6 @@
 class php::params {
   case $::osfamily {
-    'Debian': {
+    'debian': {
       $php_package_name = 'php5'
       $common_package_name = 'php5-common'
       $cli_package_name = 'php5-cli'

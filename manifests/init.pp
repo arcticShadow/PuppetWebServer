@@ -1,3 +1,14 @@
+#Lets update repo's
+
+exec { 'apt-get update':
+    command => "/usr/bin/apt-get update",
+    onlyif => "/bin/bash -c 'exit $(( $(( $(date +%s) - $(stat -c %Y /var/lib/apt/lists/$( ls /var/lib/apt/lists/ -tr1|tail -1 )) )) <= 604800 ))'"
+}
+
+
+
+
+
 #$mynetworks = []
 
 ## Setup Postfix
@@ -9,7 +20,10 @@ node default {
     nginx::resource::vhost { 'www.example.com':
         ensure   => present,
         www_root => '/var/www/www.example.com',
-        require  => File['/var/www/www.example.com'],
+        require  => [ 
+			File['/var/www/www.example.com'],
+			Exec['apt-get update']
+		    ],
     }
 
 ## Trying to get location stuff going    
@@ -34,22 +48,46 @@ node default {
     }
 }
 
-file { '/var/www/www.example.com': 
-    ensure => directory,
+# or you can assign them to a variable and use them in the resource
+$nginx_dir = [ "/var/www" ]
+
+file { $nginx_dir:
+    ensure => "directory",
+    owner  => "www-data",
+    group  => "www-data",
+    mode   => 750,
 }
-file { '/var/www/www.isthistherealsiteoristhisjustfantasy.com': 
-    ensure => directory,
+
+$nginx_dirs = [ 
+		"/var/www/www.isthistherealsiteoristhisjustfantasy.com",
+                "/var/www/www.example.com"
+                ]
+
+file { $nginx_dirs:
+    ensure => "directory",
+    owner  => "theweb",
+    group  => "theweb",
+    mode   => 750,
+    require => [ 
+		User['webuser'],
+	 	File['/var/www/']
+	       ] 
 }
 
 ## Setup MySQL (will eventually be MariaDB hopefully)
 class { 'mysql::server':
-    config_hash => { 'root_password' => 'welcomemat' }
+    config_hash => { 'root_password' => 'welcomemat' },
+    require =>  Exec['apt-get update'],
 }
 
 
 
 ## Setup vim
-class {'vim': } # This guys module is really basic, no config file even...
+class {'vim':
+	require => Exec['apt-get update'], 
+	 } # This guys module is really basic, no config file even...
+
+
 
 ## I started writing this one. Needs a bit of editing to get the config right
 # package { 'vim':
@@ -85,7 +123,7 @@ php::fpm::conf { 'www':
     user    => 'theweb',
     group   => 'theweb',
     # For the user to exist
-    require => Package['nginx'],
+    require =>  Package['nginx'],
 }
 
 ## Create a socket file for fpm
