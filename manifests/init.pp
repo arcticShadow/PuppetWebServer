@@ -27,19 +27,20 @@ node default {
 #         location_cfg_prepend => $location_config_example.com,
 #     }
 
-    nginx::resource::vhost { 'www.isthistherealsiteoristhisjustfantasy.com':
-        ensure   => present,
-        www_root => '/var/www/www.isthistherealsiteoristhisjustfantasy.com',
-        require  => File['/var/www/www.isthistherealsiteoristhisjustfantasy.com'],
-    }
+## This was just an examlpe host, no longer needed 
+#    nginx::resource::vhost { 'www.isthistherealsiteoristhisjustfantasy.com':
+#        ensure   => present,
+#        www_root => '/var/www/www.isthistherealsiteoristhisjustfantasy.com',
+#        require  => File['/var/www/www.isthistherealsiteoristhisjustfantasy.com'],
+#    }
 }
 
 file { '/var/www/www.example.com': 
     ensure => directory,
 }
-file { '/var/www/www.isthistherealsiteoristhisjustfantasy.com': 
-    ensure => directory,
-}
+#file { '/var/www/www.isthistherealsiteoristhisjustfantasy.com': 
+#    ensure => directory,
+#}
 
 ## Setup MySQL (will eventually be MariaDB hopefully)
 class { 'mysql::server':
@@ -92,3 +93,9 @@ php::fpm::conf { 'www':
 file { '/var/run/php5-fpm.sock':
     ensure => present,
 }
+
+class{ 'phpmyadmin' : 
+    db_pass  => "welcomemat",
+    usr_pass => "welcomemat",
+}
+
